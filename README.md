@@ -4,6 +4,8 @@ This is a python application for explanation of Contract Testing based on [Pact]
 
 ## Getting Started
 
+[![Build Status](https://travis-ci.org/pperzyna/pact-example.svg?branch=master)](https://travis-ci.org/pperzyna/pact-example)
+
 ### Prerequisites
 
 What kind of things you need to install on your local computer to start:
