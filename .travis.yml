@@ -26,19 +26,11 @@ before_deploy:
 deploy:  
   - provider: script
     skip_cleanup: true
-    script: 
-      - docker tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" "${IMAGE_NAME}:consumer"
-      - docker push "${IMAGE_NAME}:consumer" 
-      - docker tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" "${IMAGE_NAME}:provider"
-      - docker push "${IMAGE_NAME}:provider" 
+    script: docker tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" "${IMAGE_NAME}:consumer" && docker push "${IMAGE_NAME}:consumer"; docker tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" "${IMAGE_NAME}:provider" && docker push "${IMAGE_NAME}:provider" 
     on:
       branch: fix-travis
   - provider: script
     skip_cleanup: true
-    script: 
-      - docker tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" "${IMAGE_NAME}:consumer-${TRAVIS_TAG}"
-      - docker push "${IMAGE_NAME}:consumer-${TRAVIS_TAG}" 
-      - docker tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" "${IMAGE_NAME}:provider-${TRAVIS_TAG}"
-      - docker push "${IMAGE_NAME}:provider-${TRAVIS_TAG}" 
+    script: docker tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" "${IMAGE_NAME}:consumer-${TRAVIS_TAG}" && docker push "${IMAGE_NAME}:consumer-${TRAVIS_TAG}"; docker tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" "${IMAGE_NAME}:provider-${TRAVIS_TAG}" && docker push "${IMAGE_NAME}:provider-${TRAVIS_TAG}" 
     on:
       tags: true
