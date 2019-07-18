@@ -20,7 +20,7 @@ script:
   - docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" -f provider/Dockerfile provider/src/
 
 before_deploy:
-  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+  - echo "$REGISTRY_PASS" | docker login --username "$REGISTRY_USER" --password-stdin || true
 
 deploy:  
   - provider: script
