@@ -11,8 +11,8 @@ before_script:
   - docker pull "${IMAGE_NAME}:consumer" || true  
 
 script:
-  - docker build --pull --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" --file ./consumer/Dockerfile ./consumer/src/
-  - docker build --pull --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" --file ./provider/Dockerfile ./provider/src/
+  - cd consumer; docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" --file ./Dockerfile ./src/
+  - cd provider; docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" --file ./Dockerfile ./src/
 
 before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
