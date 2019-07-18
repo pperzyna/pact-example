@@ -1,0 +1,46 @@
+{
+  "consumer": {
+    "name": "Consumer"
+  },
+  "provider": {
+    "name": "Provider"
+  },
+  "interactions": [
+    {
+      "providerState": "User with id 3 exists",
+      "description": "a request for existing user",
+      "request": {
+        "method": "get",
+        "path": "/user/3"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": 123,
+          "name": "Test User"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "providerState": "User with id 1 does not exist",
+      "description": "a request for non existing user",
+      "request": {
+        "method": "get",
+        "path": "/user/1"
+      },
+      "response": {
+        "status": 404
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

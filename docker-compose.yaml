@@ -1,0 +1,56 @@
+version: "3"
+services:
+  consumer:
+    container_name: consumer
+    build:
+      context: ./consumer/src
+      dockerfile: ../Dockerfile
+    volumes:
+     - "./consumer/src:/usr/src/app"   
+    environment:
+     - API_PROVIDER_URL=http://provider:5000
+    # command:
+    #  - "test"
+    #  - "verify"
+    depends_on:
+     - provider
+
+  provider:
+    container_name: provider
+    build:
+      context: ./provider/src/
+      dockerfile: ../Dockerfile
+    volumes:
+     - "./provider/src/:/usr/src/app"
+    # command:
+    #  - "test"
+    environment:
+     - FLASK_ENV=development
+    ports:
+     - "5000:5000"
+
+  postgres:
+    image: postgres
+    healthcheck:
+      test: psql postgres --command "select 1" -U postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+
+  pact_broker:
+    image: pactfoundation/pact-broker
+    ports:
+      - "9292:9292"
+    depends_on:
+      - postgres
+    environment:
+      PACT_BROKER_LOG_LEVEL: DEBUG
+      PACT_BROKER_DATABASE_ADAPTER: postgres    
+      PACT_BROKER_DATABASE_USERNAME: postgres
+      PACT_BROKER_DATABASE_PASSWORD: password
+      PACT_BROKER_DATABASE_HOST: postgres
+      PACT_BROKER_DATABASE_NAME: postgres
+      PACT_BROKER_PORT: "9292"
