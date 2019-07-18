@@ -6,13 +6,18 @@ env:
   global:
     - IMAGE_NAME=pperzyna/pact-example
 
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 before_script:
   - docker pull "${IMAGE_NAME}:provider" || true
   - docker pull "${IMAGE_NAME}:consumer" || true  
 
 script:
-  - cd consumer; docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" -f Dockerfile src/
-  - cd ../provider; docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" -f Dockerfile ./src/
+  - docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" -f ./consumer/Dockerfile ./consumer/src/
+  - docker build --cache-from "${IMAGE_NAME}" --tag "${IMAGE_NAME}:provider-${TRAVIS_COMMIT}" -f provider/Dockerfile provider/src/
 
 before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
