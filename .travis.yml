@@ -23,6 +23,7 @@ before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
 
 deploy:
+  skip_cleanup: true
   - provider: script
     script: 
       - docker tag "${IMAGE_NAME}:consumer-${TRAVIS_COMMIT}" "${IMAGE_NAME}:consumer" && docker push "${IMAGE_NAME}:consumer" 
